@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Header from './Header';
+import PageMain from './PageMain';
+import menuData from './menuData';
 
-function App() {
+const App = () => {
+  const [selectedCategory, setSelectedCategory] = useState('all');
+
+  const handleCategorySelect = (category) => {
+    setSelectedCategory(category);
+  };
+
+  const getMenuItems = () => {
+    if (selectedCategory === 'all') {
+      return [...menuData.breakfast, ...menuData.lunch, ...menuData.snacks, ...menuData.dinner];
+    } else {
+      return menuData[selectedCategory];
+    }
+  };
+
+  const mainCategories = ['breakfast', 'lunch', 'snacks', 'dinner'];
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Header
+        categories={[...mainCategories]}
+        selectedCategory={selectedCategory}
+        onCategorySelect={handleCategorySelect}
+      />
+      <PageMain items={getMenuItems()} />
     </div>
   );
-}
+};
 
 export default App;
